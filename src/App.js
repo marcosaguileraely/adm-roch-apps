@@ -1,23 +1,28 @@
-import logo from './logo.svg';
+import { Layout } from 'antd';
+
 import './App.css';
+
+const { Header, Content, Footer } = Layout;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      
+      <Layout>
+        <Header>
+          My header
+        </Header>
+        <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
+          Formulario de solicitudes
+          <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+            Content
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+            Rochester School ©2021
+        </Footer>
+      </Layout>
+
     </div>
   );
 }
