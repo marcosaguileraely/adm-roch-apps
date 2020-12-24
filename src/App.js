@@ -1,7 +1,10 @@
 import { Layout } from 'antd';
 
-import './App.css';
+//Component
+import Request from './components/Request/request'
 
+//Style and UI
+import './App.css';
 const { Header, Content, Footer } = Layout;
 
 function App() {
@@ -16,6 +19,7 @@ function App() {
           Formulario de solicitudes
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
             Content
+            <Request />
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
