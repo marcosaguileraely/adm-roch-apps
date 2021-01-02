@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 
 //Component
-import Request from './components/Request/request'
+import Request from './components/Permit/permit'
 
 //Style and UI
 import './App.css';
