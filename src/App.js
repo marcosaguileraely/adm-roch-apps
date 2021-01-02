@@ -12,19 +12,22 @@ function App() {
     <div>
       
       <Layout>
+
         <Header>
           My header
         </Header>
+
         <Content className="site-layout" style={{ padding: '0 50px', marginTop: 64 }}>
-          Formulario de solicitudes
           <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
-            Content
+            <h3>Formulario de Solicitud de Permiso, Licencia o Incapacidad</h3>
             <Request />
           </div>
         </Content>
+
         <Footer style={{ textAlign: 'center' }}>
             Rochester School ©2021
         </Footer>
+
       </Layout>
 
     </div>

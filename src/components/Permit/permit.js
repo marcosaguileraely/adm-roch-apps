@@ -9,7 +9,7 @@ const Permit = () => {
     
     return (
         <main>
-            <Row>
+            <Row gutter={[32, 8]}>
                 <Col span={16}>
                     <Form />
                 </Col>

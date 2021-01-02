@@ -1,0 +1,10 @@
+span.span-in-line{
+    display: table-cell;
+    padding: 5px;
+}
+
+.terms-text {
+    font-size: 0.6rem;
+    line-height: initial;
+    text-align: justify;
+}

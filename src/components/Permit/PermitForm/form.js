@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input, Select, Radio, Space, DatePicker } from 'antd';
+import { Input, Select, Radio, Space, DatePicker, Checkbox } from 'antd';
 
 import './form.css'
 
@@ -109,6 +109,20 @@ const Form = () => {
                     placeholder="Motivo de la ausencia"
                     autoSize={{ minRows: 2 }}
                 />
+
+                <div>
+                    <span className="span-in-line" >
+                        <Checkbox 
+                            //onChange={onChange}
+                        />
+                    </span>
+                    <span className="span-in-line terms-text" >
+                    He leído y acepto la <a href="https://rochester.edu.co/politicas/" target="_blank">Política para el tratamiento de los datos personales</a> del Colegio Rochester de conformidad a lo establecido por el Artículo 15 de la Constitución Política, la Ley 1581 de 2012, Decreto 1377 de 2013, la jurispruendencia de las altas cortes y las demás normas reglamentarias y concordantes. Además entiendo que al diligenciar la solicitud de permiso, licencia o incapacidad lo hago en pleno conocimiento de las responsabilidades legales y laborales del uso de este proceso.
+                    </span>
+                    
+                
+                </div>
+                
 
             </Space>
         </div>
