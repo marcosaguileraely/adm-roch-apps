@@ -8,3 +8,8 @@ span.span-in-line{
     line-height: initial;
     text-align: justify;
 }
+
+.in-line-button{
+    display: inline !important;
+    margin-right: 10px;
+}
