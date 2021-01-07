@@ -3,9 +3,7 @@ import axios from 'axios'
 
 import { url } from '../../Variables'
 
-export function getPersonnel() {
-    axios.get(`${url}/api/people/personnel`)
-        .then(res => {
-            console.log(res.data)
-        })
+export async function getPersonnel() {
+    const res = await axios.get(`${url}/api/people/personnel`)
+    return res.data
 }
