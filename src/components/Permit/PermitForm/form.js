@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Input, Select, Radio, Space, DatePicker, Checkbox, Button } from 'antd';
+import { Input, Select, Radio, Space, DatePicker, Checkbox, Button, AutoComplete } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 
 import './form.css'
 
-const net = require ('../../../utils/Network/permit-net')
+const net = require('../../../utils/Network/permit-net')
+const util = require('../../../utils/Utils/permit-util')
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -16,26 +17,26 @@ const optionsWithDisabled = [
     { label: 'Incapacidad', value: 'Incapacidad' },
 ];
 
-const children = [];
-
-for (let i = 10; i < 36; i++) {
-    children.push(<Option key={i.toString(36) + i}>{i.toString(36) + i}</Option>);
-}
-
 const Form = () => {
-    useEffect(() => {
-        var people = []
-        //call network threads
-        const personnel = net.getPersonnel()
-        console.log(personnel)
-        setPersonnelList(personnel)
-    },[])
 
     const [type, setType] = useState('Permiso')
     const [reason, setReason] = useState('')
     const [isDisable, setDisable] = useState(true)
     const [personnelList, setPersonnelList] = useState([])
+    const [personnelItemList, setPersonnelItemList] = useState([])
     //const [counter, dispatch] = useReducer(reducer, initialState)
+
+    const fetchPersonnel = async () => {
+        const personnel = await net.getPersonnel()
+        const itemList = util.nameList(personnel)
+        console.log(`>>>Total data fetched: ${itemList.length} elements.`)
+        setPersonnelList(personnel)
+        setPersonnelItemList(itemList)
+    }
+
+    useEffect(() => {
+        fetchPersonnel()
+    }, [])
 
     const changeDocument = (value) => {
         console.log(value);
@@ -64,6 +65,10 @@ const Form = () => {
 
     const onOk = (value) => {
         console.log('onOk: ', value);
+    }
+
+    const clearFields = () => {
+        console.log("clear here!")
     }
 
     return (
@@ -107,15 +112,15 @@ const Form = () => {
                     onOk={onOk}
                 />
 
-                <Select
-                    mode="multiple"
-                    allowClear
+                <AutoComplete
                     style={{ width: '100%' }}
-                    placeholder="¿Quién(és) harán el reemplazo?"
-                    // defaultValue={['a10', 'c12']}
-                    onChange={selectCoworker} >
-                    {children}
-                </Select>
+                    options={personnelItemList}
+                    placeholder="¿Quién hará el reemplazo?"
+                    onSelect={selectCoworker}
+                    filterOption={(inputValue, option) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                    }
+                />
 
                 <TextArea
                     value={reason}
@@ -127,7 +132,7 @@ const Form = () => {
                 <div>
                     <span className="span-in-line" >
                         <Checkbox
-                            value={false}
+                            checked={false}
                             onChange={e => changeAgree(e)}
                         />
                     </span>
@@ -141,7 +146,7 @@ const Form = () => {
                     <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isDisable}>
                         Enviar
                     </Button>
-                    <Button className="in-line-button" size="large" >Restablecer</Button>
+                    <Button className="in-line-button" size="large" onClick={clearFields}>Restablecer</Button>
                 </div>
 
             </Space>
