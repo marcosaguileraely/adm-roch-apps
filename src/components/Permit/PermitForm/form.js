@@ -21,7 +21,7 @@ const Form = () => {
 
     const [type, setType] = useState('Permiso')
     const [reason, setReason] = useState('')
-    const [isDisable, setDisable] = useState(true)
+    const [isAgreeDisable, setAgreeDisable] = useState(true)
     const [personnelList, setPersonnelList] = useState([])
     const [personnelItemList, setPersonnelItemList] = useState([])
     //const [counter, dispatch] = useReducer(reducer, initialState)
@@ -61,7 +61,7 @@ const Form = () => {
         setReason(e.target.value)
     }
 
-    const changeAgree = (e) => setDisable(!e.target.checked)
+    const changeAgree = (e) => setAgreeDisable(!e.target.checked)
 
     const onOk = (value) => {
         console.log('onOk: ', value);
@@ -131,10 +131,10 @@ const Form = () => {
 
                 <div>
                     <span className="span-in-line" >
-                        <Checkbox
-                            checked={false}
-                            onChange={e => changeAgree(e)}
-                        />
+                        <Checkbox 
+                            // value={isAgreeDisable} 
+                            // checked={false} 
+                            onChange={e => changeAgree(e)} />
                     </span>
                     <span className="span-in-line terms-text" >
                         He leído y acepto la <a href="https://rochester.edu.co/politicas/" rel="noreferrer" target="_blank">Política para el tratamiento de los datos personales</a> del Colegio Rochester de conformidad a lo establecido por el Artículo 15 de la Constitución Política, la Ley 1581 de 2012, Decreto 1377 de 2013, la jurispruendencia de las altas cortes y las demás normas reglamentarias y concordantes. Además entiendo que al diligenciar la solicitud de permiso, licencia o incapacidad lo hago en pleno conocimiento de las responsabilidades legales y laborales del uso de este proceso.
@@ -143,7 +143,7 @@ const Form = () => {
                 </div>
 
                 <div>
-                    <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isDisable}>
+                    <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isAgreeDisable}>
                         Enviar
                     </Button>
                     <Button className="in-line-button" size="large" onClick={clearFields}>Restablecer</Button>
