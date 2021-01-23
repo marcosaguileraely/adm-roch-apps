@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 
 export function nameList(data){
     
@@ -24,4 +26,17 @@ export function nameList(data){
                                  jobposition,
                                  modId,
                                  personnel_id_mach_field, ...rest }) => rest )
+}
+
+export function permitDuration(dateArr){
+    var startDate = moment(dateArr[0], 'YYYY-MM-DD HH:mm:ss.SS Z')
+    var endDate = moment(dateArr[1], 'YYYY-MM-DD HH:mm:ss.SS Z')
+    console.log(`${startDate}`)
+    console.log(`${endDate}`)
+    
+    //var duration = moment.duration(startDate.diff(endDate)).asSeconds()
+    var hoursDuration = moment.duration(endDate.diff(startDate)).asHours()
+    var daysDuration = moment.duration(endDate.diff(startDate)).asDays()
+    console.log(`Hours: ${hoursDuration}`)
+    console.log(`Days: ${daysDuration}`)
 }

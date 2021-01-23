@@ -19,9 +19,18 @@ const optionsWithDisabled = [
 
 const Form = () => {
 
-    const [type, setType] = useState('Permiso')
-    const [reason, setReason] = useState('')
+    const [name, setName]             = useState('')
+    const [lastName, setLastName]     = useState('')
+    const [email, setEmail]           = useState('')
+    const [dniType, setDniType]       = useState('')
+    const [dni, setDni]               = useState('')
+    const [permitType, setPermitType] = useState('')
+    const [position, setPosition]     = useState('')
+    const [date, setDate]             = useState([])
+    const [coworker, setCoworker]     = useState('')
+    const [reason, setReason]         = useState('')
     const [isAgreeDisable, setAgreeDisable] = useState(true)
+
     const [personnelList, setPersonnelList] = useState([])
     const [personnelItemList, setPersonnelItemList] = useState([])
     //const [counter, dispatch] = useReducer(reducer, initialState)
@@ -38,78 +47,81 @@ const Form = () => {
         fetchPersonnel()
     }, [])
 
-    const changeDocument = (value) => {
-        console.log(value);
-    }
-
-    const changeType = (e) => {
-        console.log(e.target.value)
-        setType(e.target.value)
-    }
-
-    const changeDate = (value, dateString) => {
-        console.log('Selected Time: ', value);
-        console.log('Formatted Selected Time: ', dateString);
-    }
-
-    const selectCoworker = (value) => {
-        console.log(`selected ${value}`);
-    }
-
-    const changeReason = (e) => {
-        console.log(e.target.value)
-        setReason(e.target.value)
-    }
-
-    const changeAgree = (e) => setAgreeDisable(!e.target.checked)
-
-    const onOk = (value) => {
-        console.log('onOk: ', value);
-    }
+    const changeName       = (e) => setName(e.target.value)
+    const changeLastName   = (e) => setLastName(e.target.value)
+    const changeEmail      = (e) => setEmail(e.target.value)
+    const changeDniType    = (e) => setDniType(e.label)
+    const changeDni        = (e) => setDni(e.target.value)
+    const changePermitType = (e) => setPermitType(e.target.value)
+    const changePisition   = (e) => setPosition(e.target.value)
+    const changeDate       = (value, dateString) => setDate(dateString)
+    const selectCoworker   = (value) => setCoworker(value)
+    const changeReason     = (e) => setReason(e.target.value)
+    const changeAgree      = (e) => setAgreeDisable(!e.target.checked)
 
     const clearFields = () => {
         console.log("clear here!")
     }
 
+    const createTicket = () => {
+        console.log("sending...")
+
+        var permit               = {}
+        permit.name              = name
+        permit.last_name         = lastName
+        permit.email             = email
+        permit.type_dni          = dniType
+        permit.dni               = dni
+        permit.position          = position
+        permit.permit_type       = permitType
+        permit.permit_start_date = date[0]
+        permit.permit_end_date   = date[1]
+        permit.who_is_replacement= coworker
+        permit.permit_reason     = reason
+        permit.accept            = isAgreeDisable
+
+        net.addPermitRequest(permit)
+    }
+
     return (
         <div>
-            <Space direction="vertical" size={18}>
+            <Space id="space-form" direction="vertical" size={18}>
 
-                <Input size="large" placeholder="Nombres" />
+                <Input size="large" placeholder="Nombres" onChange={e => changeName(e)} />
 
-                <Input size="large" placeholder="Apellidos" />
+                <Input size="large" placeholder="Apellidos" onChange={e => changeLastName(e)} />
 
-                <Input size="large" disabled placeholder="Correo electrónico" />
+                <Input size="large" disabled placeholder="Correo electrónico" onChange={e => changeEmail(e)} />
 
                 <Input.Group compact>
                     <Select
                         size="large"
                         labelInValue
-                        defaultValue={{ value: 'cc' }}
+                        defaultValue={{ value: '--' }}
                         style={{ width: '25%' }}
-                        onChange={changeDocument}>
+                        onChange={changeDniType}>
+                        <Option value="--">Seleccione una opcion</Option>
                         <Option value="cc">Cédula Ciudadanía (C.C)</Option>
                         <Option value="ce">Cédula Extranjería (C.E)</Option>
                         <Option value="ps">Pasaporte (PS)</Option>
                     </Select>
-                    <Input size="large" style={{ width: '75%' }} placeholder="Identificación" />
+                    <Input size="large" style={{ width: '75%' }} placeholder="No. identidad" onChange={e => changeDni(e)} />
                 </Input.Group>
 
-                <Input size="large" placeholder="Cargo del empleado" />
+                <Input size="large" placeholder="Cargo del empleado" onChange={e => changePisition(e)}/>
 
                 <Radio.Group
                     options={optionsWithDisabled}
-                    onChange={e => changeType(e)}
-                    value={type}
+                    onChange={e => changePermitType(e)}
+                    value={permitType}
                     optionType="button"
                     buttonStyle="solid"
                 />
 
                 <RangePicker
-                    showTime={{ format: 'HH:mm' }}
-                    format="YYYY-MM-DD HH:mm"
+                    showTime={{ format: 'HH' }}
+                    format="YYYY-MM-DD HH"
                     onChange={changeDate}
-                    onOk={onOk}
                 />
 
                 <AutoComplete
@@ -131,19 +143,15 @@ const Form = () => {
 
                 <div>
                     <span className="span-in-line" >
-                        <Checkbox 
-                            // value={isAgreeDisable} 
-                            // checked={false} 
-                            onChange={e => changeAgree(e)} />
+                        <Checkbox onChange={e => changeAgree(e)} />
                     </span>
                     <span className="span-in-line terms-text" >
                         He leído y acepto la <a href="https://rochester.edu.co/politicas/" rel="noreferrer" target="_blank">Política para el tratamiento de los datos personales</a> del Colegio Rochester de conformidad a lo establecido por el Artículo 15 de la Constitución Política, la Ley 1581 de 2012, Decreto 1377 de 2013, la jurispruendencia de las altas cortes y las demás normas reglamentarias y concordantes. Además entiendo que al diligenciar la solicitud de permiso, licencia o incapacidad lo hago en pleno conocimiento de las responsabilidades legales y laborales del uso de este proceso.
                     </span>
-
                 </div>
 
                 <div>
-                    <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isAgreeDisable}>
+                    <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isAgreeDisable} onClick={createTicket}>
                         Enviar
                     </Button>
                     <Button className="in-line-button" size="large" onClick={clearFields}>Restablecer</Button>
