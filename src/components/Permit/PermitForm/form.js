@@ -74,8 +74,8 @@ const Form = () => {
         permit.dni               = dni
         permit.position          = position
         permit.permit_type       = permitType
-        permit.permit_start_date = date[0]
-        permit.permit_end_date   = date[1]
+        permit.permit_start_date = date[0] + ":00"
+        permit.permit_end_date   = date[1] + ":00"
         permit.who_is_replacement= coworker
         permit.permit_reason     = reason
         permit.accept            = isAgreeDisable
