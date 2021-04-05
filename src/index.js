@@ -7,7 +7,7 @@ import App from './App';
 
 import 'antd/dist/antd.css';
 
-LogRocket.init('bihsjn/rcis-rochester');
+// LogRocket.init('bihsjn/rcis-rochester');
 
 ReactDOM.render(
     <App />,

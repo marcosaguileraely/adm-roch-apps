@@ -17,23 +17,39 @@ const optionsWithDisabled = [
     { label: 'Incapacidad', value: 'Incapacidad' },
 ];
 
+const optionsWhoReplace = [
+    { label: 'Empleado', value: 'Empleado' },
+    { label: 'Externo', value: 'Externo' }
+];
+
 const Form = () => {
 
-    const [name, setName]             = useState('')
-    const [lastName, setLastName]     = useState('')
-    const [email, setEmail]           = useState('')
-    const [dniType, setDniType]       = useState('')
-    const [dni, setDni]               = useState('')
+    const DOMElement = document.querySelectorAll('input');
+
+    const [name, setName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [dniType, setDniType] = useState('')
+    const [dni, setDni] = useState('')
     const [permitType, setPermitType] = useState('')
-    const [position, setPosition]     = useState('')
-    const [date, setDate]             = useState([])
-    const [coworker, setCoworker]     = useState('')
-    const [reason, setReason]         = useState('')
+    const [position, setPosition] = useState('')
+    const [date, setDate] = useState([])
+    const [replaceType, setReplaceType] = useState('Empleado')
+    const [coworker, setCoworker] = useState('')
+    const [externalWorker, setExternalWorker] = useState('')
+    const [reason, setReason] = useState('')
     const [isAgreeDisable, setAgreeDisable] = useState(true)
 
     const [personnelList, setPersonnelList] = useState([])
     const [personnelItemList, setPersonnelItemList] = useState([])
-    //const [counter, dispatch] = useReducer(reducer, initialState)
+
+    //UI - behaviour - hooks
+    const [hiddenInternalItem, setHiddenItemInternalEmployee] = useState('visible')
+    const [hiddenExternalItem, setHiddenItemExternalEmployee] = useState('hidden')
+
+    useEffect(() => {
+        fetchPersonnel()
+    }, [])
 
     const fetchPersonnel = async () => {
         const personnel = await net.getPersonnel()
@@ -43,42 +59,57 @@ const Form = () => {
         setPersonnelItemList(itemList)
     }
 
-    useEffect(() => {
-        fetchPersonnel()
-    }, [])
-
-    const changeName       = (e) => setName(e.target.value)
-    const changeLastName   = (e) => setLastName(e.target.value)
-    const changeEmail      = (e) => setEmail(e.target.value)
-    const changeDniType    = (e) => setDniType(e.label)
-    const changeDni        = (e) => setDni(e.target.value)
+    const changeName = (e) => setName(e.target.value)
+    const changeLastName = (e) => setLastName(e.target.value)
+    const changeEmail = (e) => setEmail(e.target.value)
+    const changeDniType = (e) => setDniType(e.label)
+    const changeDni = (e) => setDni(e.target.value)
     const changePermitType = (e) => setPermitType(e.target.value)
-    const changePisition   = (e) => setPosition(e.target.value)
-    const changeDate       = (value, dateString) => setDate(dateString)
-    const selectCoworker   = (value) => setCoworker(value)
-    const changeReason     = (e) => setReason(e.target.value)
-    const changeAgree      = (e) => setAgreeDisable(!e.target.checked)
+    const changePisition = (e) => setPosition(e.target.value)
+    const changeDate = (value, dateString) => setDate(dateString)
+    const selectCoworker = (value) => setCoworker(value)
+    const changeExternalWorkerName = (e) => {
+        console.log(e.target.value)
+        setExternalWorker(e.target.value)
+    }
+    const changeReason = (e) => setReason(e.target.value)
+    const changeAgree = (e) => setAgreeDisable(!e.target.checked)
+
+    const changeReplaceType = (e) => {
+        setReplaceType(e.target.value)
+
+        if (e.target.value === 'Empleado') {
+            setHiddenItemInternalEmployee('visible')
+            setHiddenItemExternalEmployee('hidden')
+
+        } else {
+            setHiddenItemInternalEmployee('hidden')
+            setHiddenItemExternalEmployee('visible')
+        }
+    }
 
     const clearFields = () => {
         console.log("clear here!")
+        console.log(DOMElement)
+        //DOMElement[1].value = '';
+        
     }
 
     const createTicket = () => {
         console.log("sending...")
-
-        var permit               = {}
-        permit.name              = name
-        permit.last_name         = lastName
-        permit.email             = email
-        permit.type_dni          = dniType
-        permit.dni               = dni
-        permit.position          = position
-        permit.permit_type       = permitType
+        var permit = {}
+        permit.name = name
+        permit.last_name = lastName
+        permit.email = email
+        permit.type_dni = dniType
+        permit.dni = dni
+        permit.position = position
+        permit.permit_type = permitType
         permit.permit_start_date = date[0] + ":00"
-        permit.permit_end_date   = date[1] + ":00"
-        permit.who_is_replacement= coworker
-        permit.permit_reason     = reason
-        permit.accept            = isAgreeDisable
+        permit.permit_end_date = date[1] + ":00"
+        permit.who_is_replacement = replaceType === 'Empleado' ? coworker : externalWorker
+        permit.permit_reason = reason
+        permit.accept = isAgreeDisable
 
         net.addPermitRequest(permit)
     }
@@ -88,9 +119,7 @@ const Form = () => {
             <Space id="space-form" direction="vertical" size={18}>
 
                 <Input size="large" placeholder="Nombres" onChange={e => changeName(e)} />
-
                 <Input size="large" placeholder="Apellidos" onChange={e => changeLastName(e)} />
-
                 <Input size="large" disabled placeholder="Correo electrónico" onChange={e => changeEmail(e)} />
 
                 <Input.Group compact>
@@ -108,7 +137,7 @@ const Form = () => {
                     <Input size="large" style={{ width: '75%' }} placeholder="No. identidad" onChange={e => changeDni(e)} />
                 </Input.Group>
 
-                <Input size="large" placeholder="Cargo del empleado" onChange={e => changePisition(e)}/>
+                <Input size="large" placeholder="Cargo del empleado" onChange={e => changePisition(e)} />
 
                 <Radio.Group
                     options={optionsWithDisabled}
@@ -124,21 +153,40 @@ const Form = () => {
                     onChange={changeDate}
                 />
 
+                <span className="span-in-line" >
+                    ¿Quién realizará el reemplazo?
+                </span>
+                <Radio.Group
+                    options={optionsWhoReplace}
+                    onChange={e => changeReplaceType(e)}
+                    value={replaceType}
+                    optionType="button"
+                    buttonStyle="solid"
+                />
+
                 <AutoComplete
-                    style={{ width: '100%' }}
+                    id="internal-replacement"
+                    style={{ width: '100%', height: 40, visibility: hiddenInternalItem }}
                     options={personnelItemList}
-                    placeholder="¿Quién hará el reemplazo?"
+                    placeholder="Seleccione una persona de la organización"
                     onSelect={selectCoworker}
                     filterOption={(inputValue, option) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                     }
                 />
 
+                <Input id="external-replacement"
+                    style={{ width: '100%', visibility: hiddenExternalItem }}
+                    size="large"
+                    placeholder="Ingrese el nombre de la persona o empresa externa"
+                    onChange={e => changeExternalWorkerName(e)}
+                />
+
                 <TextArea
                     value={reason}
                     onChange={e => changeReason(e)}
                     placeholder="Motivo de la ausencia"
-                    autoSize={{ minRows: 2 }}
+                    autoSize={{ minRows: 4 }}
                 />
 
                 <div>
@@ -158,7 +206,7 @@ const Form = () => {
                 </div>
 
             </Space>
-        </div>
+        </div >
     );
 }
 
