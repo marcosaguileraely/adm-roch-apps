@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Input, Select, Radio, Space, DatePicker, Checkbox, Button, AutoComplete } from 'antd';
+import { Input, Select, Radio, Space, DatePicker, TimePicker, Checkbox, Button, AutoComplete } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
 
 import './form.css'
@@ -23,7 +23,6 @@ const optionsWhoReplace = [
 ];
 
 const Form = () => {
-
     const DOMElement = document.querySelectorAll('input');
 
     const [name, setName] = useState('')
@@ -33,6 +32,10 @@ const Form = () => {
     const [dni, setDni] = useState('')
     const [permitType, setPermitType] = useState('')
     const [position, setPosition] = useState('')
+    const [startDate, setStartDate] = useState([])
+    const [startTime, setStartTime] = useState([])
+    const [endDate, setEndDate] = useState([])
+    const [endTime, setEndTime] = useState([])
     const [date, setDate] = useState([])
     const [replaceType, setReplaceType] = useState('Empleado')
     const [coworker, setCoworker] = useState('')
@@ -66,50 +69,54 @@ const Form = () => {
     const changeDni = (e) => setDni(e.target.value)
     const changePermitType = (e) => setPermitType(e.target.value)
     const changePisition = (e) => setPosition(e.target.value)
-    const changeDate = (value, dateString) => setDate(dateString)
-    const selectCoworker = (value) => setCoworker(value)
-    const changeExternalWorkerName = (e) => {
-        console.log(e.target.value)
-        setExternalWorker(e.target.value)
+    const changeDate = (value, dateString) => {
+        console.log(value)
+        console.log(dateString)
+        setDate(dateString)
     }
+    const selectCoworker = (value) => setCoworker(value)
+    const changeExternalWorkerName = (e) => setExternalWorker(e.target.value)
     const changeReason = (e) => setReason(e.target.value)
     const changeAgree = (e) => setAgreeDisable(!e.target.checked)
 
     const changeReplaceType = (e) => {
         setReplaceType(e.target.value)
-
         if (e.target.value === 'Empleado') {
             setHiddenItemInternalEmployee('visible')
             setHiddenItemExternalEmployee('hidden')
-
+            setExternalWorker('')
         } else {
             setHiddenItemInternalEmployee('hidden')
             setHiddenItemExternalEmployee('visible')
+            setCoworker('')
         }
     }
 
     const clearFields = () => {
         console.log("clear here!")
-        console.log(DOMElement)
-        //DOMElement[1].value = '';
-        
+        console.log(`${coworker} and ${externalWorker}`)
+        console.log(startDate)
+        console.log(startTime)
+        console.log(endDate)
+        console.log(endTime)
     }
 
     const createTicket = () => {
         console.log("sending...")
-        var permit = {}
-        permit.name = name
-        permit.last_name = lastName
-        permit.email = email
-        permit.type_dni = dniType
-        permit.dni = dni
-        permit.position = position
-        permit.permit_type = permitType
-        permit.permit_start_date = date[0] + ":00"
-        permit.permit_end_date = date[1] + ":00"
-        permit.who_is_replacement = replaceType === 'Empleado' ? coworker : externalWorker
-        permit.permit_reason = reason
-        permit.accept = isAgreeDisable
+        var permit                     = {}
+        permit.name                    = name
+        permit.last_name               = lastName
+        permit.email                   = email
+        permit.type_dni                = dniType
+        permit.dni                     = dni
+        permit.position                = position
+        permit.permit_type             = permitType
+        permit.permit_start_date       = `${startDate[1]} - ${startTime[1]}`
+        permit.permit_end_date         = `${endDate[1]} - ${endTime[1]}`
+        permit.who_is_replacement_type = replaceType
+        permit.who_is_replacement      = replaceType === 'Empleado' ? coworker : externalWorker
+        permit.permit_reason           = reason
+        permit.accept                  = isAgreeDisable
 
         net.addPermitRequest(permit)
     }
@@ -120,7 +127,7 @@ const Form = () => {
 
                 <Input size="large" placeholder="Nombres" onChange={e => changeName(e)} />
                 <Input size="large" placeholder="Apellidos" onChange={e => changeLastName(e)} />
-                <Input size="large" disabled placeholder="Correo electrónico" onChange={e => changeEmail(e)} />
+                <Input size="large" placeholder="Correo electrónico" onChange={e => changeEmail(e)} />
 
                 <Input.Group compact>
                     <Select
@@ -147,13 +154,38 @@ const Form = () => {
                     buttonStyle="solid"
                 />
 
-                <RangePicker
+                <span className="span-in-line title-in-line" >
+                    Duración del permiso
+                </span>
+
+                <div>
+                    <div className="div-in-line ">
+                        <span className="span-in-line">Desde</span>
+                        <span className="span-in-line" >
+                            <DatePicker size="large" onChange={(moment, value) => setStartDate([moment, value])} />
+                        </span>
+                        <span className="span-in-line" >
+                            <TimePicker use12Hours format="h:mm a" size="large" onChange={(moment, value) => setStartTime([moment, value])} />
+                        </span>
+                    </div>
+                    <div className="div-in-line ">
+                        <span className="span-in-line">Hasta</span>
+                        <span className="span-in-line" >
+                            <DatePicker size="large" onChange={(moment, value) => setEndDate([moment, value])} />
+                        </span>
+                        <span className="span-in-line" >
+                            <TimePicker use12Hours format="h:mm a" size="large" onChange={(moment, value) => setEndTime([moment, value])} />
+                        </span>
+                    </div>
+                </div>
+
+                {/* <RangePicker
                     showTime={{ format: 'HH' }}
                     format="YYYY-MM-DD HH"
                     onChange={changeDate}
-                />
+                /> */}
 
-                <span className="span-in-line" >
+                <span className="span-in-line title-in-line" >
                     ¿Quién realizará el reemplazo?
                 </span>
                 <Radio.Group
@@ -170,6 +202,7 @@ const Form = () => {
                     options={personnelItemList}
                     placeholder="Seleccione una persona de la organización"
                     onSelect={selectCoworker}
+                    value={coworker}
                     filterOption={(inputValue, option) =>
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                     }
@@ -178,6 +211,7 @@ const Form = () => {
                 <Input id="external-replacement"
                     style={{ width: '100%', visibility: hiddenExternalItem }}
                     size="large"
+                    value={externalWorker}
                     placeholder="Ingrese el nombre de la persona o empresa externa"
                     onChange={e => changeExternalWorkerName(e)}
                 />
