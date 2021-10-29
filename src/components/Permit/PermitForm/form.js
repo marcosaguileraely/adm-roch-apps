@@ -233,9 +233,7 @@ const Form = () => {
                 </div>
 
                 <div>
-                    <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isAgreeDisable} onClick={createTicket}>
-                        Enviar
-                    </Button>
+                    <Button className="in-line-button" type="primary" icon={<SendOutlined />} size="large" disabled={isAgreeDisable} onClick={createTicket}>Enviar</Button>
                     <Button className="in-line-button" size="large" onClick={clearFields}>Restablecer</Button>
                 </div>
 

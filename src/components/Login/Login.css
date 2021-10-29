@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
+
+section.ant-layout.layout {
+    height: inherit;
+}
+
+.site-layout-content {
+    height: 280px;
+    /* padding: 24px;
+    background: #fff; */
+}
+
+.site-layout-content {
+    height: 100%;
+}
+
+main#content {
+    padding: 10px 15px !important;
+}
+
+#login-row {
+    height: inherit;
+}
+
+#components-layout-demo-top .logo {
+    float: left;
+    width: 120px;
+    height: 31px;
+    margin: 16px 24px 16px 0;
+    /* background: rgba(255, 255, 255, 0.3); */
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+    float: right;
+    margin: 16px 0 16px 24px;
+}
+
+#login-form {
+    border-radius: .714rem;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 0.429rem 0 rgb(51 51 51 / 20%);
+    min-width: 100%;
+}
+
+.container {
+    display: flex; /* or inline-flex */
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 0px 30px;
+}
+
+.container div {
+    width: 100%;
+    height: 5rem;
+    text-align: center;
+    /* background-color:gainsboro; */
+}
+
+.items {
+    height: 50px !important;
+}
+
+#col1{
+    /* background-color: #00ffff45; */
+}
+
+#col2{
+    /* background-color:chocolate;     */
+}
+
+/* Google Style button */
+
+button.gsuite-btn {
+    width: inherit;
+    height: 42px;
+    background-color: #4285f4;
+    border-radius: 4px !important;
+    box-shadow: 0 3px 4px 0 rgb(0 0 0 / 25%);
+    float: right;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+    border-color: #4285f4;
+}
+
+#custom-div{
+    line-height: .4 !important;
+    height: initial;
+}
+
+#initial-container {
+    background: no-repeat url(https://ik.imagekit.io/rochester59bucket/Rochester_School/Backgrounds/rochester-bg_C4OWB01AL.jpeg);
+    background-size: cover!important;
+    position: relative;
+    z-index: 101;
+    height: 100%;
+    display: flex;
+    min-height: 46rem;
+}
+
+#initial-container:before {
+    content: "";
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    position: absolute;
+    z-index: -1;
+    background-image: linear-gradient(180deg,transparent 40%,#fff 90%);
+}
+
+#col1-panel {
+    height: 100%;
+}
+
+.col-1-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 20px 6rem;
+}
+
+.col-1-container div {
+    width: 100%;
+    /* background-color: #ff7875; */
+
+}
+
+.col-1-container h1 {
+    font-size: 4.5rem;
+    font-weight: 700;
+    line-height: .5;
+    font-family: 'Didact Gothic', sans-serif;
+}
+
+.col-1-container h2 {
+    font-size: 2.0rem;
+    font-weight: 600;
+    line-height: 1.15;
+    max-width: 30rem;
+    font-family: 'Didact Gothic', sans-serif;
+}
+
+.footer{
+    text-align: center;
+    background: none;
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: 600;
+    background: none !important ;
+}
